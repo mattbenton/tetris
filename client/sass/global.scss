@@ -1,0 +1,10 @@
+@import "compass/css3";
+@import "_normalize";
+
+* {
+  @include box-sizing(border-box);
+}
+
+#container {
+  // border: 1px solid red;
+}

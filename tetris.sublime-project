@@ -1,0 +1,13 @@
+{
+	"folders":
+	[
+		{
+			"follow_symlinks": true,
+			"path": "/Users/matt/github/tetris"
+		}
+	],
+	"settings": {
+		"translate_tabs_to_spaces": true,
+		"use_tab_stops": true
+	}
+}

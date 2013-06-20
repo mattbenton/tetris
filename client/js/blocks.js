@@ -19,6 +19,7 @@
     this.currentBlock = new Block();
     this.currentBlock.randomize();
     this.grid.blocks.push(this.currentBlock);
+    this.currentBlock.moveTo(1, 1);
   };
 
   Game.prototype.update = function () {
@@ -27,41 +28,43 @@
     var grid  = this.grid;
 
     if ( input.isDown && block ) {
-      var x = 0;
-      var y = 0;
+      var x = block.x;
+      var y = block.y;
 
       switch ( input.key ) {
         case Input.LEFT:
-          x = -1;
+          x--;
           break;
         case Input.UP:
-          y = -1;
+          y--;
           break;
         case Input.RIGHT:
-          x = 1;
+          x++;
           break;
         case Input.DOWN:
-          y = 1;
+          y++;
           break;
         case Input.ROTATE:
           block.rotate(1);
+          if ( grid.hitTestBlock(block) ) {
+            block.rotate(-1);
+          }
           break;
         case Input.STAMP:
           grid.writeBlock(block, 1);
 
           this.currentBlock = block = new Block();
           block.randomize();
+          block.moveTo(1, 1);
           grid.blocks.push(block);
 
           break;
       }
 
       if ( x || y ) {
-        // grid.writeBlock(block, 0);
-        // console.log(grid.hitTestBlock(block));
-        if ( !grid.hitTestBlock(block, x + 1, y) ) {
-          block.x += x;
-          block.y += y;
+        if ( !grid.hitTestBlock(block, x, y) ) {
+          block.x = x;
+          block.y = y;
         }
         // grid.writeBlock(block, 1);
       }
@@ -104,7 +107,7 @@
   Input.prototype.handleKeyboard = function ( event ) {
     var key = event.keyCode;
 
-    console.log(key);
+    // console.log(key);
 
     // if ( key >= Input.LEFT && key <= Input.DOWN ) {
     if ( Input.keys.indexOf(key) !== -1 ) {
@@ -247,6 +250,27 @@
       }
       this.grid.push(row);
     }
+
+    this.fillBorder();
+  };
+
+  Grid.prototype.fillBorder = function ( value ) {
+    var grid = this.grid;
+    var cols = this.cols;
+    var rows = this.rows;
+    var i;
+
+    value = value || 9;
+
+    for ( i = 0; i < cols; i++ ) {
+      grid[0][i]        = value;
+      grid[rows - 1][i] = value;
+    }
+
+    for ( i = 0; i < rows; i++ ) {
+      grid[i][0]        = value;
+      grid[i][rows - 1] = value;
+    }
   };
 
   Grid.prototype.print = function () {
@@ -261,8 +285,18 @@
     }
   };
 
-  Grid.prototype.hitTestBlock = function ( block, offsetX, offsetY ) {
-    return this.hitTestShape(block.shape.data, block.x + (offsetY || 0), block.y + (offsetY || 0));
+  Grid.prototype.hitTestBlock = function ( block, x, y ) {
+    if ( x === undefined ) {
+      x = block.x;
+    }
+    if ( y === undefined ) {
+      y = block.y;
+    }
+    return this.hitTestShape(block.shape.data, x, y);
+  };
+
+  Grid.prototype.hitTestBlockWithOffset = function ( block, offsetX, offsetY ) {
+    return this.hitTestShape(block.shape.data, block.x + (offsetX || 0), block.y + (offsetY || 0));
   };
 
   Grid.prototype.hitTestShape = function ( shapeData, gridX, gridY ) {
@@ -313,6 +347,11 @@
 
     this.shape = new Shape('random');
     this.color = Color.random();
+  };
+
+  Block.prototype.moveTo = function ( x, y ) {
+    this.x = x;
+    this.y = y;
   };
 
   // Rotates the block in 90 degree steps, clockwise for positive integers

@@ -9,6 +9,34 @@
   // Define the global `Tetris` module.
   var Tetris = root.Tetris = {};
 
+  // # Renderer
+
+  // The base **Renderer** class.
+
+  var Renderer = Tetris.Renderer = function () {
+
+  };
+
+  // # Color
+
+  // Defines the colors each block can be and provides a convenience method to
+  // get a random color.
+
+  var Color = Tetris.Color = {
+    red:    { fill: '#f14d43', stroke: '#7c1413' },
+    orange: { fill: '#f79210', stroke: '#c04207' },
+    yellow: { fill: '#ffd101', stroke: '#d77e06' },
+    green:  { fill: '#13cb15', stroke: '#067a0b' },
+    blue:   { fill: '#36abfb', stroke: '#2e72d5' },
+    purple: { fill: '#c390db', stroke: '#894ab5' }
+  };
+
+  Color.names = ['red', 'orange', 'yellow', 'green', 'blue', 'purple'];
+
+  Color.random = function () {
+    return Color[Color.names[Math.floor(Math.random() * 6)]];
+  };
+
   // # Tetris.Grid
   //
   //
@@ -17,7 +45,69 @@
     // changes.
     this.debug = false;
 
+    this.size = 25;
+
+    this.blocks = [];
+
+    this.$grid = $('#grid');
+    this.context = this.$grid[0].getContext('2d');
+
     this.clear(cols, rows);
+  };
+
+  Grid.prototype.render = function () {
+    var ctx  = this.context;
+    var grid = this.grid;
+    var cols = this.cols;
+    var rows = this.rows;
+    var size = this.size;
+    var x, y, bit;
+
+    var blocks = this.blocks;
+    var blockCount = blocks.length;
+    var i, block, color, shape, shapeSize, shapeData;
+
+    ctx.clearRect(0, 0, cols * size, rows * size);
+
+    for ( i = 0; i < blockCount; i++ ) {
+      block = blocks[i];
+      shape = block.shape;
+      shapeData = shape.data;
+      shapeSize = shape.size;
+
+      color = Color.random();
+
+      ctx.fillStyle   = color.fill;
+      ctx.strokeStyle = color.stroke;
+      ctx.lineWidth   = 2;
+      ctx.beginPath();
+
+      for ( y = 0; y < shapeSize; y++ ) {
+        for ( x = 0; x < shapeSize; x++ ) {
+          bit = shapeData[y][x];
+          if ( bit ) {
+            ctx.rect((x + block.x) * size, (y + block.y) * size, size, size);
+          }
+        }
+      }
+
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+    }
+
+    // for ( y = 0; y < rows; y++ ) {
+    //   for ( x = 0; x < cols; x++ ) {
+    //     bit = grid[y][x];
+    //     if ( bit ) {
+    //       ctx.fillStyle = color.fill;
+    //       ctx.beginPath();
+    //       ctx.rect(x * size, y * size, size, size);
+    //       ctx.closePath();
+    //       ctx.fill();
+    //     }
+    //   }
+    // }
   };
 
   Grid.prototype.clear = function ( cols, rows ) {
@@ -37,7 +127,7 @@
   };
 
   Grid.prototype.print = function () {
-    if ( console.clear ) {
+    if ( console.clear && 0 ) {
       console.clear();
     } else {
       console.log('-------------------------------');
@@ -49,10 +139,10 @@
   };
 
   Grid.prototype.hitTestBlock = function ( block, offsetX, offsetY ) {
-    return this.hitTestShapeData(block.shapeData, block.x + (offsetY || 0), block.y + (offsetY || 0));
+    return this.hitTestShapeData(block.shape.data, block.x + (offsetY || 0), block.y + (offsetY || 0));
   };
 
-  Grid.prototype.hitTestShapeData = function ( shapeData, gridX, gridY ) {
+  Grid.prototype.hitTestShape = function ( shapeData, gridX, gridY ) {
     var i, j, x, y;
 
     for ( j = 0; j < shapeData.length; j++ ) {
@@ -69,7 +159,7 @@
   };
 
   Grid.prototype.writeBlock = function ( block, fill ) {
-    this.writeShapeData(block.shapeData, block.x, block.y, fill);
+    this.writeShapeData(block.shape.data, block.x, block.y, fill);
   };
 
   Grid.prototype.writeShapeData = function ( shapeData, gridX, gridY, fill ) {
@@ -98,110 +188,38 @@
     this.x = 0;
     this.y = 0;
 
-    this.shapeType = null;
-    this.shapeIndex = 0;
+    this.shape = new Shape('random');
   };
 
-  Block.createRandom = function () {
-    var block = new Block();
-    block.setShape();
-    return block;
+  // Rotates the block in 90 degree steps, clockwise for positive integers
+  // and counterclockwise for negative integers. If called without arguments,
+  // a random number of rotations are applied.
+  Block.prototype.rotate = function ( amount ) {
+    this.shape.rotate(amount);
   };
 
-  // Rotates the block 90 degrees clockwise.
-  Block.prototype.rotate = function () {
-    if ( this.shapeIndex < this.shapeCount - 1 ) {
-      this.shapeIndex++;
-    } else {
-      this.shapeIndex = 0;
-    }
-    this.setShape(this.shapeType, this.shapeIndex);
+  Block.prototype.randomize = function () {
+    this.shape.randomize();
   };
 
-  Block.prototype.setShape = function ( type, index ) {
-    if ( type === undefined ) {
-      type = Block.shapeTypes[Math.floor(Math.random() * Block.shapeTypes.length)];
-    }
+  // # Tetris.Shape
 
-    this.shapeType  = type;
-    this.shapeCount = Block.shapeData[type].length;
+  // **Shapes** are essentially square matrices that represent the solid
+  // areas of a block by storing values higher than `zero`. These values are
+  // used to denote the color of each area.
 
-    if ( index === undefined ) {
-      index = Math.floor(Math.random() * this.shapeCount);
-    }
-
-    this.shapeIndex = index;
-    this.shapeData = Block.shapeData[type][index];
-  };
-
-  // ## Shape Data
-
-  // The shape of each block and its various rotated forms (listed in
-  // clockwise direction) are defined using simple two-dimensional arrays.
-  // This data is used to draw each shape and for collision detection on
-  // the grid and against other shapes.
-
-  // For example, the initial rotation of the "S" shaped block is defined as
-  // having two rows as seen in the image below. `1`'s are used to represent
-  // the solid areas of the shape.
-
-  //      Block.shapeData.S = [
-  //        [[0, 1, 1], [1, 1, 0]],
-  //        ...
-  //      ];
+  // Shapes are defined by the minimum matrix size necessary to represent the
+  // shape and an array of points that denote the solid areas.
 
   // <div style="text-align: center;">
   //   <img src="http://1.bp.blogspot.com/_zWFdJl7vhzA/TErn3NFwRrI/AAAAAAAABsA/4aGia3qvC9k/s1600/tetrominoes.png" width="350" />
   // </div>
 
-  Block.shapeTypes = ['I', 'J', 'L', 'O', 'S', 'T', 'Z'];
-
-  Block.shapeData = {};
-
-  Block.shapeData.I = [
-    [[1, 1, 1, 1]],
-    [[1], [1], [1], [1]]
-  ];
-
-  Block.shapeData.J = [
-    [[1, 1, 1], [0, 0, 1]],
-    [[0, 1], [0, 1], [1, 1]],
-    [[1, 0, 0], [1, 1, 1]],
-    [[1, 1], [1, 0], [1, 0]]
-  ];
-
-  Block.shapeData.L = [
-    [[1, 1, 1], [1, 0, 0]],
-    [[1, 1], [0, 1], [0, 1]],
-    [[0, 0, 1], [1, 1, 1]],
-    [[1, 0], [1, 0], [1, 1]]
-  ];
-
-  Block.shapeData.O = [
-    [[1, 1], [1, 1]]
-  ];
-
-  Block.shapeData.S = [
-    [[0, 1, 1], [1, 1, 0]],
-    [[1, 0], [1, 1], [0, 1]]
-  ];
-
-  Block.shapeData.T = [
-    [[1, 1, 1], [0, 1, 0]],
-    [[0, 1], [1, 1], [0, 1]],
-    [[0, 1, 0], [1, 1, 1]],
-    [[1, 0], [1, 1], [1, 0]]
-  ];
-
-  Block.shapeData.Z = [
-    [[1, 1, 0], [0, 1, 1]],
-    [[0, 1], [1, 1], [1, 0]]
-  ];
-
-  var Shape = Tetris.Shape = function () {
-    this.data = [];
+  var Shape = Tetris.Shape = function ( type ) {
+    this.setType(type);
   };
 
+  // Creates a square matrix of a specific size.
   Shape.createMatrix = function ( size ) {
     var matrix = [];
     var x, y, row;
@@ -217,7 +235,20 @@
     return matrix;
   };
 
+  Shape.types = ['I', 'J', 'L', 'O', 'S', 'T', 'Z'];
+
+  Shape.prototype.randomize = function () {
+    this.setType();
+    this.rotate();
+  };
+
   Shape.prototype.setType = function ( type ) {
+    if ( !type || type === 'random' ) {
+      type = Shape.types[Math.floor(Math.random() * Shape.types.length)];
+    }
+
+    this.type = type;
+
     if ( type === 'O' ) {
       this.resize(2);
       this.fill([[0, 0], [0, 1], [1, 0], [1, 1]], 1);
@@ -242,31 +273,62 @@
     }
   };
 
+  // Fills all specified points in the matrix with a certain value. Values
+  // greater than `zero` are considered solid.
   Shape.prototype.fill = function ( points, value ) {
     for ( var i = 0; i < points.length; i++ ) {
       this.data[points[i][1]][points[i][0]] = value;
     }
   };
 
+  // Clears and resizes the matrix to a certain size.
   Shape.prototype.resize = function ( size ) {
     this.data = Shape.createMatrix(size);
     this.size = size;
   };
 
-  Shape.prototype.rotate = function () {
-    var data    = this.data;
-    var size    = this.size;
-    var rotated = Shape.createMatrix(size);
-
-    for ( var i = 0; i < size; i++ ) {
-      for ( var j = 0; j < size; j++ ) {
-        rotated[i][j] = data[size - j - 1][i];
-      }
+  // Rotates the matrix in 90 degree steps, clockwise for positive integers
+  // and counterclockwise for negative integers. If called without arguments,
+  // a random number of rotations are applied.
+  Shape.prototype.rotate = function ( amount ) {
+    if ( amount === undefined ) {
+      amount = Math.floor(Math.random() * 4);
+    } else if ( typeof amount !== 'number' ) {
+      amount = 0;
     }
 
-    this.data = rotated;
+    if ( amount ) {
+      var data    = this.data;
+      var size    = this.size;
+      var i, j, rotated;
+
+      while ( amount > 0 ) {
+        amount--;
+        rotated = Shape.createMatrix(size);
+        for ( i = 0; i < size; i++ ) {
+          for ( j = 0; j < size; j++ ) {
+            rotated[i][j] = data[size - j - 1][i];
+          }
+        }
+        data = rotated;
+      }
+
+      while ( amount < 0 ) {
+        amount++;
+        rotated = Shape.createMatrix(size);
+        for ( i = 0; i < size; i++ ) {
+          for ( j = 0; j < size; j++ ) {
+            rotated[size - j - 1][i] = data[i][j];
+          }
+        }
+        data = rotated;
+      }
+
+      this.data = data;
+    }
   };
 
+  // For debugging, prints the matrix to the Developer console.
   Shape.prototype.print = function () {
     if ( console.clear ) {
       console.clear();
@@ -289,39 +351,25 @@
 /* globals Kinetic, Tetris */
 /* @codekit-prepend 'blocks.js' */
 
-var grid = new Tetris.Grid(10, 10);
-grid.debug = true;
-
-var s = Tetris.Block.shapeData.S[0];
-var j = Tetris.Block.shapeData.J[0];
-var t = Tetris.Block.shapeData.T[3];
-
-// grid.writeShapeData(t, 0, 0, 4);
-
-// grid.writeShapeData(s, 0, 2, 1);
-
-
-var b = Tetris.Block.createRandom();
-// console.log(b);
 // grid.writeBlock(b, 1);
 
-var s = new Tetris.Shape();
-s.setType('T');
-s.print();
-s.rotate();
+$(function() {
 
-setInterval(function() {
-  s.print();
-  s.rotate();
-}, 1000);
+  var grid = new Tetris.Grid(10, 10);
+  grid.debug = true;
 
-// setInterval(function() {
-//   grid.writeBlock(b, 0);
-//   // b.y++;
-//   b.rotate();
-//   grid.writeBlock(b, 1);
-// }, 500);
+  var i = 10;
 
-// console.log(grid.hitTestShapeData(t, 0, 0));
+  while ( i-- ) {
+    var b = new Tetris.Block();
+    b.randomize();
 
-// grid.writeShapeData(j, 2, 1, 2);
+    b.x = Math.floor(Math.random() * 5);
+    b.y = Math.floor(Math.random() * 5);
+
+    grid.blocks.push(b);
+  }
+
+  grid.render();
+
+});

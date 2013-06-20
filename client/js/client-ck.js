@@ -20,6 +20,9 @@
     this.currentBlock.randomize();
     this.grid.blocks.push(this.currentBlock);
     this.currentBlock.moveTo(1, 1);
+
+    this.grid.render();
+    this.grid.print();
   };
 
   Game.prototype.update = function () {
@@ -239,18 +242,13 @@
   Grid.prototype.clear = function ( cols, rows ) {
     var x, y, row;
 
-    this.cols = cols || this.cols;
-    this.rows = rows || this.rows;
-    this.grid = [];
+    cols = cols || this.cols;
+    rows = rows || this.rows;
 
-    for ( y = 0; y < rows; y++ ) {
-      row = [];
-      for ( x = 0; x < cols; x++ ) {
-        row.push(0);
-      }
-      this.grid.push(row);
-    }
+    this.cols = cols;
+    this.rows = rows;
 
+    this.grid = create2dArray(cols, rows);
     this.fillBorder();
   };
 
@@ -382,22 +380,6 @@
     this.setType(type);
   };
 
-  // Creates a square matrix of a specific size.
-  Shape.createMatrix = function ( size ) {
-    var matrix = [];
-    var x, y, row;
-
-    for ( y = 0; y < size; y++ ) {
-      row = [];
-      for ( x = 0; x < size; x++ ) {
-        row.push(0);
-      }
-      matrix.push(row);
-    }
-
-    return matrix;
-  };
-
   Shape.types = ['I', 'J', 'L', 'O', 'S', 'T', 'Z'];
 
   Shape.prototype.randomize = function () {
@@ -446,7 +428,7 @@
 
   // Clears and resizes the matrix to a certain size.
   Shape.prototype.resize = function ( size ) {
-    this.data = Shape.createMatrix(size);
+    this.data = create2dArray(size, size);
     this.size = size;
   };
 
@@ -467,7 +449,7 @@
 
       while ( amount > 0 ) {
         amount--;
-        rotated = Shape.createMatrix(size);
+        rotated = create2dArray(size, size);
         for ( i = 0; i < size; i++ ) {
           for ( j = 0; j < size; j++ ) {
             rotated[i][j] = data[size - j - 1][i];
@@ -478,7 +460,7 @@
 
       while ( amount < 0 ) {
         amount++;
-        rotated = Shape.createMatrix(size);
+        rotated = create2dArray(size, size);
         for ( i = 0; i < size; i++ ) {
           for ( j = 0; j < size; j++ ) {
             rotated[size - j - 1][i] = data[i][j];
@@ -502,6 +484,29 @@
     for ( var i = 0; i < this.data.length; i++ ) {
       console.log(this.data[i].join(' '));
     }
+  };
+
+  // # Helper Methods
+
+  // Creates a two-dimensional array of a specific width and height. If no
+  // fill value is specified the array is filled with zeros. 
+  var create2dArray = Tetris.create2dArray = function ( cols, rows, fillValue ) {
+    var arr = [];
+    var x, y, row;
+
+    if ( fillValue === undefined ) {
+      fillValue = 0;
+    }
+
+    for ( y = 0; y < rows; y++ ) {
+      row = [];
+      for ( x = 0; x < cols; x++ ) {
+        row.push(fillValue);
+      }
+      arr.push(row);
+    }
+
+    return arr;
   };
 
 }).call(this);

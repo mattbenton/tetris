@@ -9,11 +9,127 @@
   // Define the global `Tetris` module.
   var Tetris = root.Tetris = {};
 
+  var Game = Tetris.Game = function () {
+    this.input = new Input(this);
+
+    this.grid = new Grid(10, 10);
+    this.grid.debug = true;
+    this.grid.render();
+
+    this.currentBlock = new Block();
+    this.currentBlock.randomize();
+    this.grid.blocks.push(this.currentBlock);
+  };
+
+  Game.prototype.update = function () {
+    var input = this.input;
+    var block = this.currentBlock;
+    var grid  = this.grid;
+
+    if ( input.isDown && block ) {
+      var x = 0;
+      var y = 0;
+
+      switch ( input.key ) {
+        case Input.LEFT:
+          x = -1;
+          break;
+        case Input.UP:
+          y = -1;
+          break;
+        case Input.RIGHT:
+          x = 1;
+          break;
+        case Input.DOWN:
+          y = 1;
+          break;
+        case Input.ROTATE:
+          block.rotate(1);
+          break;
+        case Input.STAMP:
+          grid.writeBlock(block, 1);
+
+          this.currentBlock = block = new Block();
+          block.randomize();
+          grid.blocks.push(block);
+
+          break;
+      }
+
+      if ( x || y ) {
+        // grid.writeBlock(block, 0);
+        // console.log(grid.hitTestBlock(block));
+        if ( !grid.hitTestBlock(block, x + 1, y) ) {
+          block.x += x;
+          block.y += y;
+        }
+        // grid.writeBlock(block, 1);
+      }
+
+      grid.render();
+    }
+  };
+
+  // # Input
+
+  // Handles input from the player.
+
+  var Input = Tetris.Input = function ( game ) {
+    this.game = game;
+
+    this.addListeners();
+  };
+
+  Input.LEFT   = 37;
+  Input.UP     = 38;
+  Input.RIGHT  = 39;
+  Input.DOWN   = 40;
+  Input.ROTATE = 32;
+  Input.STAMP  = 70;
+
+  Input.keys = [Input.LEFT, Input.UP, Input.RIGHT, Input.DOWN, Input.ROTATE, Input.STAMP];
+
+  Input.prototype.addListeners = function () {
+    var self = this;
+
+    $(window).on('keydown keyup', function ( event ) {
+      self.handleKeyboard(event);
+    });
+  };
+
+  Input.prototype.removeListeners = function () {
+    $(window).off('keydown keyup');
+  };
+
+  Input.prototype.handleKeyboard = function ( event ) {
+    var key = event.keyCode;
+
+    console.log(key);
+
+    // if ( key >= Input.LEFT && key <= Input.DOWN ) {
+    if ( Input.keys.indexOf(key) !== -1 ) {
+      if ( event.type === 'keydown' ) {
+        event.preventDefault();
+
+        this.key    = key;
+        this.isDown = true;
+
+        this.game.update();
+      } else if ( event.type === 'keyup' ) {
+        this.isDown = false;
+      }
+    }
+  };
+
   // # Renderer
 
   // The base **Renderer** class.
 
   var Renderer = Tetris.Renderer = function () {
+
+  };
+
+  Renderer.prototype.render = function () {
 
   };
 
@@ -69,16 +185,35 @@
 
     ctx.clearRect(0, 0, cols * size, rows * size);
 
+    // Render grid lines.
+    ctx.save();
+    // Canvas calculates stuff on the half pixel, so offset everything by half
+    // a pixel so we actually get a line one pixel wide.
+    // ctx.translate(0.5, 0.5);
+    for ( y = 0; y < rows + 1; y++ ) {
+      for ( x = 0; x < cols + 1; x++ ) {
+        ctx.moveTo(x * size, 0);
+        ctx.lineTo(x * size, rows * size);
+
+        ctx.moveTo(0, y * size);
+        ctx.lineTo(cols * size, y * size);
+      }
+    }
+    ctx.strokeStyle = '#eee';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+    ctx.restore();
+
+    ctx.save();
+    // ctx.translate(0.5, 0.5);
     for ( i = 0; i < blockCount; i++ ) {
       block = blocks[i];
       shape = block.shape;
       shapeData = shape.data;
       shapeSize = shape.size;
 
-      color = Color.random();
-
-      ctx.fillStyle   = color.fill;
-      ctx.strokeStyle = color.stroke;
+      ctx.fillStyle   = block.color.fill;
+      ctx.strokeStyle = block.color.stroke;
       ctx.lineWidth   = 2;
       ctx.beginPath();
 
@@ -95,19 +230,7 @@
       ctx.fill();
       ctx.stroke();
     }
-
-    // for ( y = 0; y < rows; y++ ) {
-    //   for ( x = 0; x < cols; x++ ) {
-    //     bit = grid[y][x];
-    //     if ( bit ) {
-    //       ctx.fillStyle = color.fill;
-    //       ctx.beginPath();
-    //       ctx.rect(x * size, y * size, size, size);
-    //       ctx.closePath();
-    //       ctx.fill();
-    //     }
-    //   }
-    // }
+    ctx.restore();
   };
 
   Grid.prototype.clear = function ( cols, rows ) {
@@ -139,7 +262,7 @@
   };
 
   Grid.prototype.hitTestBlock = function ( block, offsetX, offsetY ) {
-    return this.hitTestShapeData(block.shape.data, block.x + (offsetY || 0), block.y + (offsetY || 0));
+    return this.hitTestShape(block.shape.data, block.x + (offsetY || 0), block.y + (offsetY || 0));
   };
 
   Grid.prototype.hitTestShape = function ( shapeData, gridX, gridY ) {
@@ -189,6 +312,7 @@
     this.y = 0;
 
     this.shape = new Shape('random');
+    this.color = Color.random();
   };
 
   // Rotates the block in 90 degree steps, clockwise for positive integers
@@ -355,21 +479,23 @@
 
 $(function() {
 
-  var grid = new Tetris.Grid(10, 10);
-  grid.debug = true;
+  var game = new Tetris.Game();
 
-  var i = 10;
+  // var grid = new Tetris.Grid(10, 10);
+  // grid.debug = true;
 
-  while ( i-- ) {
-    var b = new Tetris.Block();
-    b.randomize();
+  // var i = 10;
 
-    b.x = Math.floor(Math.random() * 5);
-    b.y = Math.floor(Math.random() * 5);
+  // while ( i-- ) {
+  //   var b = new Tetris.Block();
+  //   b.randomize();
 
-    grid.blocks.push(b);
-  }
+  //   b.x = Math.floor(Math.random() * 5);
+  //   b.y = Math.floor(Math.random() * 5);
 
-  grid.render();
+  //   grid.blocks.push(b);
+  // }
+
+  // grid.render();
 
 });

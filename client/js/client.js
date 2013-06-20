@@ -6,21 +6,23 @@
 
 $(function() {
 
-  var grid = new Tetris.Grid(10, 10);
-  grid.debug = true;
+  var game = new Tetris.Game();
 
-  var i = 10;
+  // var grid = new Tetris.Grid(10, 10);
+  // grid.debug = true;
 
-  while ( i-- ) {
-    var b = new Tetris.Block();
-    b.randomize();
+  // var i = 10;
 
-    b.x = Math.floor(Math.random() * 5);
-    b.y = Math.floor(Math.random() * 5);
+  // while ( i-- ) {
+  //   var b = new Tetris.Block();
+  //   b.randomize();
 
-    grid.blocks.push(b);
-  }
+  //   b.x = Math.floor(Math.random() * 5);
+  //   b.y = Math.floor(Math.random() * 5);
 
-  grid.render();
+  //   grid.blocks.push(b);
+  // }
+
+  // grid.render();
 
 });

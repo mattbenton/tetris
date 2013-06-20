@@ -6,30 +6,9 @@
 }
 
 #container {
-  // border: 1px solid red;
+  text-align: center;
 }
 
-$bit-size: 25px;
-
-.grid {
-  position: relative;
-  width: 320px;
-  height: 400px;
-  border: 1px solid black;
-}
-
-.grid b {
-  position: absolute;
-  display: block;
-  width: 25px;
-  height: 25px;
-  background-color: #000;
-
-  &.red {
-    background-color: red;
-  }
-
-  &.blue {
-    background-color: blue;
-  }
+#grid {
+  margin-top: 50px;
 }

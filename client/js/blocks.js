@@ -19,7 +19,6 @@
     this.currentBlock = new Block();
     this.currentBlock.randomize();
     this.grid.blocks.push(this.currentBlock);
-    this.currentBlock.moveTo(1, 1);
 
     this.grid.render();
     this.grid.print();
@@ -58,18 +57,14 @@
 
           this.currentBlock = block = new Block();
           block.randomize();
-          block.moveTo(1, 1);
           grid.blocks.push(block);
 
           break;
       }
 
-      if ( x || y ) {
-        if ( !grid.hitTestBlock(block, x, y) ) {
-          block.x = x;
-          block.y = y;
-        }
-        // grid.writeBlock(block, 1);
+      if ( !grid.hitTestBlock(block, x, y) ) {
+        block.x = x;
+        block.y = y;
       }
 
       grid.render();
@@ -249,7 +244,7 @@
     this.rows = rows;
 
     this.grid = create2dArray(cols, rows);
-    this.fillBorder();
+    // this.fillBorder();
   };
 
   Grid.prototype.fillBorder = function ( value ) {
@@ -297,6 +292,18 @@
     return this.hitTestShape(block.shape.data, block.x + (offsetX || 0), block.y + (offsetY || 0));
   };
 
+  // Returns `true` if the shape data at the given input coordinates is
+  // colliding with an edge of the grid or overlapping another shape that
+  // has been *written* to the grid already.
+
+  // This is achieved by looping through each bit that makes up the shape and
+  // calculating its position in the grid. If a solid bit (non-zero bit value)
+  // falls outside of the grid bounds or overlaps with a non-zero bit already
+  // written to the grid on its coordinate, then the entire shape is
+  // considered to be in collision.
+
+  // *Sounds complicated, but it's pretty simple!* ☺
+
   Grid.prototype.hitTestShape = function ( shapeData, gridX, gridY ) {
     var i, j, x, y;
 
@@ -304,8 +311,13 @@
       for ( i = 0; i < shapeData[j].length; i++ ) {
         x = i + gridX;
         y = j + gridY;
-        if ( shapeData[j][i] && x >= 0 && x < this.cols && y >= 0 && y < this.rows && this.grid[y][x] ) {
-          return true;
+
+        if ( shapeData[j][i] ) {
+          if ( x < 0 || x >= this.cols || y < 0 || y >= this.rows ) {
+            return true;
+          } else if ( this.grid[y][x] ) {
+            return true;
+          }
         }
       }
     }

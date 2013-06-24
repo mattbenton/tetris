@@ -4,6 +4,14 @@
 		"selected_items":
 		[
 			[
+				"render",
+				"renderer"
+			],
+			[
+				"Can",
+				"CanvasRenderer"
+			],
+			[
 				"hit",
 				"hitTestBlockWithOffset"
 			],
@@ -506,51 +514,11 @@
 			[
 				"all",
 				"allSlabs"
-			],
-			[
-				"geta",
-				"get_all_keys"
-			],
-			[
-				"json_",
-				"json_encode"
 			]
 		]
 	},
 	"buffers":
 	[
-		{
-			"file": "client/js/client.js",
-			"settings":
-			{
-				"buffer_size": 492,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "client/js/blocks.js",
-			"settings":
-			{
-				"buffer_size": 14479,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "client/index.html",
-			"settings":
-			{
-				"buffer_size": 1117,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "client/sass/global.scss",
-			"settings":
-			{
-				"buffer_size": 156,
-				"line_ending": "Unix"
-			}
-		}
 	],
 	"build_system": "Packages/Haxe/Support/Hxml.sublime-build",
 	"command_palette":
@@ -667,7 +635,7 @@
 				"Package Control: Install Package"
 			]
 		],
-		"width": 449.0
+		"width": 467.0
 	},
 	"console":
 	{
@@ -687,12 +655,25 @@
 	},
 	"file_history":
 	[
-		"/Users/matt/github/tetris/gen-docs.sh",
-		"/Users/matt/github/old-tetris/blocks.js",
 		"/Users/matt/github/tetris/client/index.html",
-		"/Users/matt/github/tetris/client/js/client copy.js",
+		"/Users/matt/github/tetris/client/scripts/tetris/game.js",
+		"/Users/matt/github/tetris/client/scripts/tetris/grid.js",
+		"/Users/matt/github/tetris/client/scripts/tetris/utils.js",
+		"/Users/matt/github/tetris/client/scripts/blocks.js",
+		"/Users/matt/github/tetris/client/scripts/tetris/color.js",
+		"/Users/matt/github/tetris/gen-docs.sh",
+		"/Users/matt/github/tetris/client/scripts/tetris/block.js",
+		"/Users/matt/github/tetris/client/scripts/tetris/shape.js",
+		"/Users/matt/github/tetris/client/build.js",
+		"/Users/matt/github/tetris/client/main-built.js",
+		"/Users/matt/github/tetris/client/scripts/tetris/renderer.js",
+		"/Users/matt/github/tetris/client/scripts/tetris/input.js",
+		"/Users/matt/github/tetris/client/scripts/main.js",
 		"/Users/matt/github/tetris/client/sass/global.scss",
 		"/Users/matt/github/tetris/client/js/client.js",
+		"/Users/matt/github/tetris/client/js/blocks.js",
+		"/Users/matt/github/old-tetris/blocks.js",
+		"/Users/matt/github/tetris/client/js/client copy.js",
 		"/Users/matt/github/expens.us/mobile/www/assets/sass/global.scss",
 		"/private/etc/apache2/extra/httpd-vhosts.conf",
 		"/etc/hosts",
@@ -801,20 +782,7 @@
 		"/Users/matt/work/fanplayr/product/trunk/site/www/widgets/genius/js/widget.js",
 		"/Users/matt/work/fanplayr/product/trunk/site/www/widgets/genius/js/app.js",
 		"/Users/matt/work/fanplayr/product/trunk/site/www/widgets/genius/js/legacy-sales-orders-ck.js",
-		"/Users/matt/work/fanplayr/product/trunk/site/www/lib/site/Config.class.php",
-		"/Users/matt/work/fanplayr/product/trunk/site/src/fp/data/api/FpApiDefs.hx",
-		"/Users/matt/work/fanplayr/product/trunk/site/src/poko/controllers/HtmlController.hx",
-		"/Users/matt/work/fanplayr/product/trunk/site/src/poko/utils/memcache/Memcache.hx",
-		"/Users/matt/work/fanplayr/product/trunk/site/src/site/dashboard/genius/Site.hx",
-		"/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/Xcode/Specifications/iPhoneXcode4Options.xcspec",
-		"/Applications/Xcode.app/Contents/OtherFrameworks/XcodeEdit.framework/Versions/A/Resources/xctxtmacro.xclangspec",
-		"/Applications/Xcode.app/Contents/SharedFrameworks/DVTFoundation.framework/Versions/A/Resources/xctxtmacro.xclangspec",
-		"/Users/matt/work/fanplayr/product/trunk/site/www/widgets/genius/js/fingerprint.js",
-		"/Volumes/Data/Fanplayr/magento1.6.2.0/js/varien/js.js",
-		"/Users/matt/work/fanplayr/product/trunk/site/www/widgets/genius/js/md5.js",
-		"/Volumes/Data/Fanplayr/magento1.6.2.0/app/design/frontend/base/default/template/fanplayr/embed.phtml",
-		"/Volumes/Data/Fanplayr/magento1.6.2.0/skin/frontend/socialcoupons/fanplayr_join.html",
-		"/Volumes/Data/Fanplayr/magento1.6.2.0/skin/frontend/socialcoupons/fanplayr_socialcoupons.js"
+		"/Users/matt/work/fanplayr/product/trunk/site/www/lib/site/Config.class.php"
 	],
 	"find":
 	{
@@ -853,6 +821,56 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"Color",
+			"color",
+			"Color",
+			"Shape",
+			"Renderer",
+			"Block",
+			"create2dArray",
+			"Utils",
+			"Shape",
+			"isValid",
+			"bit",
+			"Shape",
+			"block",
+			"Block",
+			"Tetris.Game",
+			"Tetris",
+			"bar",
+			"print",
+			"debug",
+			"= 7",
+			"RED",
+			"2d2d2",
+			"894ab5",
+			"565656",
+			"2d2d2d",
+			"c390db",
+			"6",
+			"Purple",
+			"var",
+			"false",
+			"isValid",
+			"Game",
+			"this",
+			"lastBit",
+			"writeBl",
+			" }",
+			"writeblo",
+			"values",
+			",",
+			"'",
+			"}",
+			"    ",
+			"}",
+			" },",
+			":",
+			"this",
+			" 1",
+			"renderBlo",
+			"this",
+			"10",
 			"span",
 			"class",
 			"hitTestBlock",
@@ -930,57 +948,7 @@
 			"data",
 			"rotated",
 			"[0",
-			"500",
-			"lenght",
-			"size",
-			"resize",
-			"grid",
-			"matrix",
-			"this",
-			"cols",
-			"rows",
-			"grid",
-			"clear",
-			"i",
-			"1000",
-			"this",
-			"type",
-			"block",
-			"X",
-			"cols",
-			"i",
-			"j",
-			"shapeData",
-			"block",
-			"Block",
-			"this",
-			"currentBlock",
-			"setInteral",
-			"setTimeout",
-			"doClear",
-			"doCLear",
-			"currentGr",
-			"x",
-			"y",
-			"j",
-			"i",
-			"current",
-			"pop",
-			"prototype",
-			"rows",
-			"cols",
-			"var",
-			"columns",
-			"height",
-			"width",
-			"kT",
-			"layers",
-			"layer",
-			"Layer",
-			"rect",
-			"layer",
-			"rect",
-			":"
+			"500"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -1001,125 +969,8 @@
 	"groups":
 	[
 		{
-			"selected": 2,
 			"sheets":
 			[
-				{
-					"buffer": 0,
-					"file": "client/js/client.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 492,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								102,
-								68
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "client/js/blocks.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 14479,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								3069,
-								3069
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 1629.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "client/index.html",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1117,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1099,
-								1099
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/HTML/HTML.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "client/sass/global.scss",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 156,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								154,
-								154
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Sass/Syntaxes/Sass.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				}
 			]
 		}
 	],
@@ -1169,6 +1020,14 @@
 		"height": 0.0,
 		"selected_items":
 		[
+			[
+				"sha",
+				"client/scripts/tetris/shape.js"
+			],
+			[
+				"bloc",
+				"client/scripts/tetris/block.js"
+			],
 			[
 				"inde",
 				"client/index.html"
@@ -1672,14 +1531,6 @@
 			[
 				"genssses",
 				"site/src/fp/data/objects/GeniusSession.hx"
-			],
-			[
-				"datetoo",
-				"site/src/poko/utils/DateTools2.hx"
-			],
-			[
-				"dashboarlay",
-				"site/www/tpl/core/layouts/DashboardLayout.php"
 			]
 		],
 		"width": 0.0

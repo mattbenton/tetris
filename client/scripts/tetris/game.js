@@ -17,7 +17,7 @@ function( $, Block, Input, Grid, Renderer ) {
     renderer.render();
     renderer.renderBlock(block);
 
-    // this.loop();
+    this.loop();
   };
 
   Game.prototype.loop = function () {
@@ -42,9 +42,9 @@ function( $, Block, Input, Grid, Renderer ) {
     this.renderer.render();
     this.renderer.renderBlock(block);
 
-    // setTimeout(function() {
-    //   self.loop();
-    // }, 500);
+    setTimeout(function() {
+      self.loop();
+    }, 500);
   };
 
   Game.prototype.update = function () {
@@ -61,7 +61,13 @@ function( $, Block, Input, Grid, Renderer ) {
           x--;
           break;
         case Input.UP:
-          y--;
+          this.dropBlock();
+          y = block.y;
+          this.lockBlock();
+          this.newBlock();
+          block = this.currentBlock;
+
+          // y--;
           // block.rotate(1);
           // if ( grid.hitTestBlock(block) ) {
           //   block.rotate(-1);
@@ -111,6 +117,28 @@ function( $, Block, Input, Grid, Renderer ) {
 
       this.renderer.renderBlock(block);
     }
+  };
+
+  Game.prototype.dropBlock = function () {
+    var block = this.currentBlock;
+
+    do {
+      block.y++;
+      console.log('drop');
+    } while ( !this.grid.hitTestBlock(block) );
+
+    // Move the block up to compensate for the collision.
+    block.y--;
+  };
+
+  Game.prototype.lockBlock = function () {
+    var block = this.currentBlock;
+    this.grid.writeBlock(block, block.color.index);
+  };
+
+  Game.prototype.newBlock = function () {
+    this.currentBlock = new Block();
+    this.currentBlock.randomize();
   };
 
   Game.prototype.tryRotate = function ( amount ) {

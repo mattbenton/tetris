@@ -18,7 +18,7 @@ define(['jquery'], function( $ ) {
   Input.DOWN   = 40;
   Input.ROTATE_LEFT = 69;
   Input.ROTATE_RIGHT = 81;
-  Input.STAMP  = 70;
+  Input.STAMP  = 32;
 
   Input.keys = [Input.LEFT, Input.UP, Input.RIGHT, Input.DOWN, Input.ROTATE_LEFT, Input.ROTATE_RIGHT, Input.STAMP];
 

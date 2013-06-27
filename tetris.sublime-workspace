@@ -4,6 +4,14 @@
 		"selected_items":
 		[
 			[
+				"max",
+				"maxWidth"
+			],
+			[
+				"ran",
+				"randomRange"
+			],
+			[
 				"render",
 				"renderer"
 			],
@@ -506,26 +514,97 @@
 			[
 				"mc",
 				"mc_host"
-			],
-			[
-				"slab",
-				"slab_id"
-			],
-			[
-				"all",
-				"allSlabs"
 			]
 		]
 	},
 	"buffers":
 	[
+		{
+			"file": "client/scripts/main.js",
+			"settings":
+			{
+				"buffer_size": 179,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "client/scripts/tetris/input.js",
+			"settings":
+			{
+				"buffer_size": 2118,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "Gruntfile.js",
+			"settings":
+			{
+				"buffer_size": 1008,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Users/matt/work/fanplayr/temp/histogram/index.html",
+			"settings":
+			{
+				"buffer_size": 293,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "$(function(){\n\n  var ctx = $('#grid')[0].getContext('2d');\n\n  var randomRange = function ( min, max ) {\n    return Math.floor(Math.random() * (max - min + 1)) + min;\n  };\n\n  var random = function () {\n    return randomRange(50, 450);\n  };\n\n  $.getJSON('data.json', function ( data ) {\n    var i, item;\n\n    console.log(data);\n\n    ctx.translate(0.5, 0.5);\n    ctx.strokeStyle = 'rgba(0, 0, 0, 0.1)';\n    ctx.lineWidth = 1;\n\n    var maxWidth = 400;\n\n    for ( i = 0; i < data.items.length; i++ ) {\n      item = data.items[i];\n\n      var spend = (item.$ - data.spend.min) / (data.spend.max - data.spend.min);\n      var spend = (item.$ - data.spend.min) / (data.spend.max - data.spend.min);\n\n      // if ( spend < 0 || spend > 1 ) {\n      //   console.log(spend, i);\n      // }\n\n      // if ( spend === 0 || spend === 1 ) {\n      //   console.log(spend, i);\n      // }\n\n      // console.log(spend);\n\n      ctx.moveTo(spend * maxWidth, 0);\n      // ctx.lineTo(item.o, 100);\n      // ctx.stroke();\n\n      if ( i > 10 ) {\n        // break;\n      }\n    }\n\n    console.log('done');\n\n  });\n\n  // var i = 50;\n\n  // ctx.translate(0.5, 0.5);\n  // ctx.strokeStyle = 'rgba(0, 0, 0, 0.1)';\n  // ctx.lineWidth = 1;\n\n  // while ( i-- ) {\n  //   ctx.moveTo(random(), random());\n  //   ctx.lineTo(random(), random());\n  //   ctx.stroke();\n  // }\n\n});",
+			"file": "/Users/matt/work/fanplayr/temp/histogram/main.js",
+			"file_size": 1225,
+			"file_write_time": 130167595940000000,
+			"settings":
+			{
+				"buffer_size": 1331,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": ".gitignore",
+			"settings":
+			{
+				"buffer_size": 46,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "client/build.js",
+			"settings":
+			{
+				"buffer_size": 230,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "client/scripts/tetris/renderer.js",
+			"settings":
+			{
+				"buffer_size": 2083,
+				"line_ending": "Unix"
+			}
+		}
 	],
 	"build_system": "Packages/Haxe/Support/Hxml.sublime-build",
 	"command_palette":
 	{
-		"height": 127.0,
+		"height": 247.0,
 		"selected_items":
 		[
+			[
+				"ind",
+				"Indentation: Convert to Spaces"
+			],
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
 			[
 				"ss js",
 				"Set Syntax: JavaScript"
@@ -537,18 +616,6 @@
 			[
 				"in",
 				"Indentation: Convert to Spaces"
-			],
-			[
-				"ind",
-				"Indentation: Convert to Spaces"
-			],
-			[
-				"install",
-				"Package Control: Install Package"
-			],
-			[
-				"remove",
-				"Package Control: Remove Package"
 			],
 			[
 				"ruby",
@@ -656,19 +723,27 @@
 	"file_history":
 	[
 		"/Users/matt/github/tetris/client/index.html",
+		"/Users/matt/github/tetris/package.json",
+		"/Users/matt/work/fanplayr/eclipse-workspace/genius-reports/Gruntfile.js",
+		"/Users/matt/github/tetris/Gruntfile.js",
+		"/Users/matt/github/tetris/client/scripts/main.js",
+		"/Users/matt/github/tetris/client/.jshintrc",
 		"/Users/matt/github/tetris/client/scripts/tetris/game.js",
+		"/Users/matt/github/tetris/client/build.js",
+		"/Users/matt/github/tetris/client/package.json",
+		"/Users/matt/github/tetris/client/scripts/tetris/block.js",
+		"/Users/matt/github/tetris/client/bob.js",
+		"/Users/matt/github/tetris/client/init.js",
+		"/Users/matt/github/tetris/client/scripts/client.js",
 		"/Users/matt/github/tetris/client/scripts/tetris/grid.js",
 		"/Users/matt/github/tetris/client/scripts/tetris/utils.js",
 		"/Users/matt/github/tetris/client/scripts/blocks.js",
 		"/Users/matt/github/tetris/client/scripts/tetris/color.js",
 		"/Users/matt/github/tetris/gen-docs.sh",
-		"/Users/matt/github/tetris/client/scripts/tetris/block.js",
 		"/Users/matt/github/tetris/client/scripts/tetris/shape.js",
-		"/Users/matt/github/tetris/client/build.js",
 		"/Users/matt/github/tetris/client/main-built.js",
 		"/Users/matt/github/tetris/client/scripts/tetris/renderer.js",
 		"/Users/matt/github/tetris/client/scripts/tetris/input.js",
-		"/Users/matt/github/tetris/client/scripts/main.js",
 		"/Users/matt/github/tetris/client/sass/global.scss",
 		"/Users/matt/github/tetris/client/js/client.js",
 		"/Users/matt/github/tetris/client/js/blocks.js",
@@ -774,15 +849,7 @@
 		"/Users/matt/work/fanplayr/product/trunk/site/src/poko/views/View.hx",
 		"/Users/matt/work/fanplayr/product/trunk/site/src/fp/data/api/FpAccountApi.hx",
 		"/Volumes/Data/Fanplayr/magento1.6.2.0/app/code/community/Fanplayr/Socialcoupons/Model/OrderObserver.php",
-		"/Volumes/Data/Fanplayr/magento1.6.2.0/app/design/frontend/base/default/template/fanplayr/success.phtml",
-		"/Users/matt/work/fanplayr/opsworks-cookbooks/scm_helper/libraries/package.rb",
-		"/Users/matt/work/fanplayr/product/trunk/site/src/fp/data/api/FpGeniusApi.hx",
-		"/Users/matt/work/fanplayr/product/trunk/site/src/fp/data/api/FpCacheUtility.hx",
-		"/Users/matt/work/fanplayr/product/trunk/site/www/widgets/genius/js/legacy-sales-orders.js",
-		"/Users/matt/work/fanplayr/product/trunk/site/www/widgets/genius/js/widget.js",
-		"/Users/matt/work/fanplayr/product/trunk/site/www/widgets/genius/js/app.js",
-		"/Users/matt/work/fanplayr/product/trunk/site/www/widgets/genius/js/legacy-sales-orders-ck.js",
-		"/Users/matt/work/fanplayr/product/trunk/site/www/lib/site/Config.class.php"
+		"/Volumes/Data/Fanplayr/magento1.6.2.0/app/design/frontend/base/default/template/fanplayr/success.phtml"
 	],
 	"find":
 	{
@@ -821,6 +888,25 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"spend",
+			"var",
+			"moveTo",
+			"100",
+			"400",
+			"320",
+			"Tetris",
+			"true",
+			"Game",
+			"client",
+			"jshint",
+			"lint",
+			"files",
+			"uglify",
+			"init",
+			"bob",
+			"Tetris",
+			"Game",
+			"game",
 			"Color",
 			"color",
 			"Color",
@@ -929,26 +1015,7 @@
 			"ffb301",
 			"a06ac8",
 			"13cb15",
-			"07a80a",
-			"dd2324",
-			"bit",
-			"cols",
-			"shapeSize",
-			"rows",
-			"green",
-			"Colors",
-			"fill",
-			"bg",
-			"border",
-			"red",
-			"120",
-			"150",
-			"getContext",
-			"rotated",
-			"data",
-			"rotated",
-			"[0",
-			"500"
+			"07a80a"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -969,8 +1036,235 @@
 	"groups":
 	[
 		{
+			"selected": 4,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "client/scripts/main.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 179,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								179,
+								179
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "client/scripts/tetris/input.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2118,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								77,
+								77
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "Gruntfile.js",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 1008,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								182,
+								182
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "/Users/matt/work/fanplayr/temp/histogram/index.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 293,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								172,
+								172
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "/Users/matt/work/fanplayr/temp/histogram/main.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1331,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								617,
+								622
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": ".gitignore",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 46,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								45,
+								45
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "client/build.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 230,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								157,
+								157
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "client/scripts/tetris/renderer.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2083,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								879,
+								529
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
 			]
 		}
 	],
@@ -1021,6 +1315,38 @@
 		"selected_items":
 		[
 			[
+				"render",
+				"client/scripts/tetris/renderer.js"
+			],
+			[
+				"grun",
+				"Gruntfile.js"
+			],
+			[
+				"build",
+				"client/build.js"
+			],
+			[
+				"git",
+				".gitignore"
+			],
+			[
+				"inde",
+				"client/index.html"
+			],
+			[
+				"input",
+				"client/scripts/tetris/input.js"
+			],
+			[
+				"in",
+				"client/index.html"
+			],
+			[
+				"clie",
+				"client/scripts/client.js"
+			],
+			[
 				"sha",
 				"client/scripts/tetris/shape.js"
 			],
@@ -1029,16 +1355,8 @@
 				"client/scripts/tetris/block.js"
 			],
 			[
-				"inde",
-				"client/index.html"
-			],
-			[
 				"glob",
 				"client/sass/global.scss"
-			],
-			[
-				"clie",
-				"client/js/client.js"
 			],
 			[
 				"re",
@@ -1059,10 +1377,6 @@
 			[
 				"segerulese",
 				"src/fp/data/objects/SegmentRuleset.hx"
-			],
-			[
-				"build",
-				"build.hxml"
 			],
 			[
 				"matt",
@@ -1511,26 +1825,6 @@
 			[
 				"fpgenal",
 				"site/src/fp/data/plugins/FpGeniusAlgorithm.hx"
-			],
-			[
-				"fpgena",
-				"site/src/fp/data/api/FpGeniusApi.hx"
-			],
-			[
-				"gens",
-				"site/src/fp/data/objects/GeniusSession.hx"
-			],
-			[
-				"externgen",
-				"site/src/site/external/Genius.hx"
-			],
-			[
-				"matt.hx",
-				"site/src/site/test/Matt.hx"
-			],
-			[
-				"genssses",
-				"site/src/fp/data/objects/GeniusSession.hx"
 			]
 		],
 		"width": 0.0

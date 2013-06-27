@@ -8,13 +8,16 @@ function( $, Block, Input, Grid, Renderer ) {
     grid.debug = true;
 
     var block = this.currentBlock = new Block();
-    block.randomize();
+    block.shape.setType('T');
+    // block.randomize();
+
+    block.x = block.y = 2;
 
     var renderer = this.renderer = new Renderer(grid);
     renderer.render();
     renderer.renderBlock(block);
 
-    this.loop();
+    // this.loop();
   };
 
   Game.prototype.loop = function () {
@@ -39,9 +42,9 @@ function( $, Block, Input, Grid, Renderer ) {
     this.renderer.render();
     this.renderer.renderBlock(block);
 
-    setTimeout(function() {
-      self.loop();
-    }, 500);
+    // setTimeout(function() {
+    //   self.loop();
+    // }, 500);
   };
 
   Game.prototype.update = function () {
@@ -74,11 +77,17 @@ function( $, Block, Input, Grid, Renderer ) {
           //   block.rotate(1);
           // }
           break;
-        case Input.ROTATE:
-          block.rotate(1);
-          if ( grid.hitTestBlock(block) ) {
-            block.rotate(-1);
-          }
+        case Input.ROTATE_LEFT:
+          // block.rotate(1);
+
+          // if ( grid.hitTestBlock(block) ) {
+          //   block.rotate(-1);
+          // }
+
+          this.tryRotate(1);
+          break;
+        case Input.ROTATE_RIGHT:
+          this.tryRotate(-1);
           break;
         case Input.STAMP:
           grid.writeBlock(block, block.color.index);
@@ -92,9 +101,9 @@ function( $, Block, Input, Grid, Renderer ) {
       if ( !grid.hitTestBlock(block, x, y) ) {
         block.x = x;
 
-        if ( y > block.y ) {
+        // if ( y > block.y ) {
           block.y = y;
-        }
+        // }
       }
 
       // grid.render();
@@ -102,6 +111,40 @@ function( $, Block, Input, Grid, Renderer ) {
 
       this.renderer.renderBlock(block);
     }
+  };
+
+  Game.prototype.tryRotate = function ( amount ) {
+    var grid  = this.grid;
+    var block = this.currentBlock;
+
+    amount = amount || 1;
+
+    block.rotate(amount);
+
+    if ( !grid.hitTestBlock(block) ) {
+      return true;
+    }
+
+    block.x--;
+    if ( !grid.hitTestBlock(block) ) {
+      return true;
+    }
+    block.x++;
+
+    block.x++;
+    if ( !grid.hitTestBlock(block) ) {
+      return true;
+    }
+    block.x--;
+
+    block.y--;
+    if ( !grid.hitTestBlock(block) ) {
+      return true;
+    }
+    block.y++;
+
+    block.rotate(-amount);
+    return false;
   };
 
   return Game;

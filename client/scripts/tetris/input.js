@@ -16,10 +16,11 @@ define(['jquery'], function( $ ) {
   Input.UP     = 38;
   Input.RIGHT  = 39;
   Input.DOWN   = 40;
-  Input.ROTATE = 32;
+  Input.ROTATE_LEFT = 69;
+  Input.ROTATE_RIGHT = 81;
   Input.STAMP  = 70;
 
-  Input.keys = [Input.LEFT, Input.UP, Input.RIGHT, Input.DOWN, Input.ROTATE, Input.STAMP];
+  Input.keys = [Input.LEFT, Input.UP, Input.RIGHT, Input.DOWN, Input.ROTATE_LEFT, Input.ROTATE_RIGHT, Input.STAMP];
 
   Input.prototype.addListeners = function () {
     var self = this;

@@ -12,6 +12,8 @@
 //   <img src="http://1.bp.blogspot.com/_zWFdJl7vhzA/TErn3NFwRrI/AAAAAAAABsA/4aGia3qvC9k/s1600/tetrominoes.png" width="350" />
 // </div>
 
+// Another good resource to check out <http://tetris.wikia.com/wiki/SRS>.
+
 define(['tetris/utils'], function( Utils ){
 
   function Shape ( type ) {
@@ -22,7 +24,7 @@ define(['tetris/utils'], function( Utils ){
 
   Shape.prototype.randomize = function () {
     this.setType();
-    this.rotate();
+    // this.rotate();
   };
 
   Shape.prototype.setType = function ( type ) {
